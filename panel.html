@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrativo</title>
+    <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <span class="brand-icon">🏫</span>
+                <span class="brand-name">Panel Administrativo</span>
+            </div>
+            <div class="profile">
+                <img src="https://via.placeholder.com/100" alt="Perfil" class="profile-img">
+                <p class="profile-name">Abiel Ontiveros</p>
+                <p class="profile-role">Dueño</p>
+            </div>
+        </div>
+        <nav>
+            <a href="panel.html" class="nav-link active">Administración</a>
+            <a href="estudiantes.html" class="nav-link">Estudiantes</a>
+            <a href="asistencia.html" class="nav-link">Asistencia por Grupos</a>
+            <a href="faltas.html" class="nav-link">Faltas por Grupos</a>
+            <a href="graficas.html" class="nav-link">Gráficas</a>
+        </nav>
+        <div class="signout">
+            <a href="#">Regresar</a>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="header">
+            <h1>Administración</h1>
+            <div class="header-actions">
+                <button class="btn">?</button>
+                <button class="btn">🔔</button>
+            </div>
+        </div>
+        <div class="cards-container">
+            <div class="card">
+                <h3>Próxima Actualización <a href="#" class="view-link">Ver todo</a></h3>
+                <p>Datos de Estudiantes - 02:34 PM, 06 de Junio de 2025</p>
+                <div class="card-content">
+                    <span>📋</span> Actualizando Registros de Administración
+                </div>
+            </div>
+            <div class="card">
+                <h3>Estadísticas de Admin <a href="#" class="view-link">Ver todo</a></h3>
+                <div class="stats">
+                    <p>Usuarios: 1</p>
+                    <p>Activo: Sí</p>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Estado del Sistema</h3>
+                <p>En línea</p>
+            </div>
+            <div class="card">
+                <h3>Recordatorio</h3>
+                <p>Revisar configuración de admin</p>
+                <button class="btn primary">Ir a Configuración</button>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-buttons">
+        <button class="btn" onclick="scrollToTop()">↑</button>
+        <button class="btn" onclick="scrollToBottom()">↓</button>
+    </div>
+    <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

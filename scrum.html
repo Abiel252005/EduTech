@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>EduTech Conalep Orizaba</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      background: linear-gradient(to right, #eef2f3, #d9e4f5);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .phase {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .phase:hover {
+      transform: translateY(-5px);
+    }
+
+    .phase h2 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #34495e;
+    }
+
+    .phase .dates {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .task {
+      background: #f8f9fa;
+      padding: 10px;
+      margin: 8px 0;
+      border-left: 4px solid #3498db;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s;
+    }
+
+    .task.completed {
+      background: #d4edda;
+      border-color: #28a745;
+      text-decoration: line-through;
+    }
+
+    .task span {
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+
+    .task button {
+      background: #3498db;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .task.completed button {
+      background: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <h1>Scrum - EduTech Conalep Orizaba</h1>
+  <div class="board">
+    <div class="phase">
+      <h2>Configuración Inicial</h2>
+      <div class="dates">05 mayo - 18 mayo</div>
+      <div class="task"><span>Crear repositorio GitHub</span><button onclick="toggleComplete(this)">Hecho</button></div>
+      <div class="task"><span>Configurar entorno de trabajo</span><button onclick="toggleComplete(this)">Hecho</button></div>
+      <div class="task"><span>Asignar roles del equipo</span><button onclick="toggleComplete(this)">Hecho</button></div>
+    </div>
+
+    <div class="phase">
+      <h2>Programación</h2>
+      <div class="dates">19 mayo - 22 junio</div>
+      <div class="task"><span>Diseñar interfaz principal</span><button onclick="toggleComplete(this)">Hecho</button></div>
+      <div class="task"><span>Conectar backend con frontend</span><button onclick="toggleComplete(this)">Hecho</button></div>
+      <div class="task"><span>Pruebas unitarias</span><button onclick="toggleComplete(this)">Hecho</button></div>
+    </div>
+
+    <div class="phase">
+      <h2>Pruebas Piloto</h2>
+      <div class="dates">23 junio - 06 julio</div>
+      <div class="task"><span>Ejecutar pruebas con usuarios</span><button onclick="toggleComplete(this)">Hecho</button></div>
+      <div class="task"><span>Recopilar retroalimentación</span><button onclick="toggleComplete(this)">Hecho</button></div>
+    </div>
+
+    <div class="phase">
+      <h2>Evaluación y Ajustes</h2>
+      <div class="dates">07 julio - 20 julio</div>
+      <div class="task"><span>Corregir errores reportados</span><button onclick="toggleComplete(this)">Hecho</button></div>
+      <div class="task"><span>Mejorar rendimiento</span><button onclick="toggleComplete(this)">Hecho</button></div>
+    </div>
+
+    <div class="phase">
+      <h2>Documentación y Revisión</h2>
+      <div class="dates">21 julio - 10 agosto</div>
+      <div class="task"><span>Manual de usuario</span><button onclick="toggleComplete(this)">Hecho</button></div>
+      <div class="task"><span>Revisión de código final</span><button onclick="toggleComplete(this)">Hecho</button></div>
+    </div>
+
+    <div class="phase">
+      <h2>Entrega y Presentación</h2>
+      <div class="dates">11 agosto - 17 agosto</div>
+      <div class="task"><span>Presentación del proyecto</span><button onclick="toggleComplete(this)">Hecho</button></div>
+      <div class="task"><span>Revisión con docentes</span><button onclick="toggleComplete(this)">Hecho</button></div>
+    </div>
+  </div>
+
+  <script>
+    function toggleComplete(button) {
+      const task = button.parentElement;
+      task.classList.toggle('completed');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudiantes</title>
+    <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <span class="brand-icon">🏫</span>
+                <span class="brand-name">Panel Administrativo</span>
+                <span class="brand-subname">AOS-TEMA</span>
+            </div>
+            <div class="profile">
+                <img src="https://via.placeholder.com/100" alt="Perfil" class="profile-img">
+                <p class="profile-name">Abiel Ontiveros</p>
+                <p class="profile-role">Dueño</p>
+            </div>
+        </div>
+        <nav>
+            <a href="panel.html" class="nav-link">Administración</a>
+            <a href="estudiantes.html" class="nav-link active">Estudiantes</a>
+            <a href="asistencia.html" class="nav-link">Asistencia por Grupos</a>
+            <a href="faltas.html" class="nav-link">Faltas por Grupos</a>
+            <a href="graficas.html" class="nav-link">Gráficas</a>
+        </nav>
+        <div class="signout">
+            <a href="#">Regresar</a>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="header">
+            <h1>Estudiantes</h1>
+            <div class="header-actions">
+                <button class="btn">?</button>
+                <button class="btn">🔔</button>
+            </div>
+        </div>
+        <div class="cards-container">
+            <div class="card">
+                <h3>Lista de Estudiantes</h3>
+                <div class="filter-bar">
+                    <input type="text" id="filterInput" placeholder="Filtrar por nombre o grupo...">
+                </div>
+                <table id="studentTable">
+                    <thead>
+                        <tr><th>ID</th><th>Nombre</th><th>Grupo</th></tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                        <tr><td>242520454-8</td><td>Ángel Farid Alvarado Pérez</td><td>201-EMEC23</td></tr>
+                        <tr><td>242520704-6</td><td>Julio César Amador Hernández</td><td>201-EMEC23</td></tr>
+                        <tr><td>242520475-3</td><td>Enrique Andrade Reyes</td><td>201-EMEC23</td></tr>
+                        <tr><td>242520643-6</td><td>Tania Lizeth Arellano Calvario</td><td>201-EMEC23</td></tr>
+                        <tr><td>242520061-1</td><td>Emiliano Badillo Hernández</td><td>201-EMEC23</td></tr>
+                        <tr><td>242520552-9</td><td>Jatniel Barragán Martínez</td><td>201-EMEC23</td></tr>
+                        <tr><td>242520888-7</td><td>Jeshua Uziel Bruno Valerio</td><td>201-EMEC23</td></tr>
+                        <tr><td>242520870-5</td><td>Iyari Carmona Martínez</td><td>201-EMEC23</td></tr>
+                        <tr><td>242520086-8</td><td>Abigail Castillo Hernández</td><td>201-EMEC23</td></tr>
+                        <tr><td>242520198-1</td><td>Yerami Colotl Carrera</td><td>201-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520371-4</td><td>Aldo Cruz Flores</td><td>201-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520691-5</td><td>Estibaliz De Lucio Matla</td><td>201-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520367-2</td><td>Axel Uriel Dorantes Morales</td><td>201-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242521004-0</td><td>Aram Alexander Estevez Torres</td><td>201-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520718-6</td><td>Edahi Gallardo Jasso</td><td>201-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520088-4</td><td>Santiago García Carballo</td><td>201-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520263-3</td><td>Javier Emiliano García Sánchez</td><td>201-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>252520206-1</td><td>Itzel Guadalupe González Angel</td><td>201-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520087-6</td><td>Alexander Gutiérrez Montero</td><td>201-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520799-6</td><td>Ángel Manuel Jiménez Parra</td><td>201-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520483-7</td><td>Kevin Uriel Aguilar Rodríguez</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520383-9</td><td>Jesus Alberto Balderas Vázquez</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520741-8</td><td>Jesús Barreda Campos</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520564-4</td><td>Ricardo Kensuke Castro Takahashi</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520049-6</td><td>Yeira Yexalen Choncoa Ramírez</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520689-9</td><td>Brayan Emanuel Farfán Villarino</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520037-1</td><td>Diego Fernández Rodríguez</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520677-4</td><td>Carlos Manuel Flores Rojas</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520908-3</td><td>Paola Rosy Gallegos González</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520236-9</td><td>Juan Emiliano García De Jesús</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520909-1</td><td>Mauricio García Romero</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520583-4</td><td>Fernando Andrey Gaytán Flores</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520064-5</td><td>Alexis Eduardo González Flores</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520980-2</td><td>Abiel González González</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520123-9</td><td>Christian Heredia Pérez</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520725-1</td><td>Juan Pablo Hernández Aguirre</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520702-0</td><td>Jorge Arturo Hernández Reyes</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520753-3</td><td>Danna Vanessa Herrera Flores</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520178-3</td><td>Emilio Jaume Téllez</td><td>202-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520500-8</td><td>Uri Dariel Aquino González</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520392-0</td><td>Santiago Arcos Sánchez</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520270-8</td><td>Jorge Antonio Bermúdez Cortés</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520975-2</td><td>María Fernanda Cid Ramírez</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520901-8</td><td>Cindy Araceli Conde Vázquez</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520161-9</td><td>Adiel Bernardo Corona Anica</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520136-1</td><td>Faustino Ulises Cruz López</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520283-1</td><td>Marcos Jonathan Damián Flores</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520641-0</td><td>Edgar Yahel Díaz Hernández</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520286-4</td><td>Marcos De Jesús Espíritu Romero</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520490-2</td><td>Abril Guadalupe Flores Sandoval</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520516-4</td><td>José Manuel Galicia González</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520279-9</td><td>Luis Fernando González Pérez</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520434-0</td><td>Fernando González Xalamihua</td><td>203-EMEC23</td></tr>
+                        <tr class="hidden-row"><td>242520506-5</td><td>Cristina Arellano Maldonado</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242521014-9</td><td>Jonathan Jaziel Arenas Zuñiga</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520499-3</td><td>Vanessa Arias Bustamante</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520234-4</td><td>Concepción Shamady Beristain Irivas</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520232-8</td><td>Jocelin Briones Hernández</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520491-0</td><td>Diego Zoe Chávez Olguín</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520915-8</td><td>Jorge Miguel Cruz González</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520890-3</td><td>Julissa De Jesús Pérez</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520415-9</td><td>Rubí Cecilia De La Cruz Piedras</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520880-4</td><td>Jeysi Adai De La Cruz Tequihuatle</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520468-8</td><td>Osiris Ailín Dector Balderas</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520481-1</td><td>Dulce Nelly Durán Morales</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520805-1</td><td>Milla Danaeth Flores Carrera</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520688-1</td><td>Mariana Galicia Rodríguez</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520944-8</td><td>Lizbeth García Morales</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520897-8</td><td>Brayan Guevara Basilio</td><td>205-INFO23</td></tr>
+                        <tr class="hidden-row"><td>242520407-6</td><td>Dilan Yahir Álvarez Sánchez</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520709-5</td><td>Ángel Rafael Ascención Marín</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520382-1</td><td>Alexis Beltrán Martínez</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520935-6</td><td>John Brian Calvario Sánchez</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520666-7</td><td>Yareli Castillo Heredia</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520588-3</td><td>Edmarth Giovanny Cerqueda Chamorro</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520825-9</td><td>Luis Uriel Cesareo Romero</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520772-3</td><td>Nicolás Cortés Gómez</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520440-7</td><td>Iván Charbel De Los Santos Flores</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520320-1</td><td>José Eduardo Domínguez Aladino</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520278-1</td><td>Laura Jezabel Escobar Cortez</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520532-1</td><td>Cristian Iván García Hernández</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520223-7</td><td>Ángel Magdiel Gaytán Martínez</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520523-0</td><td>Hiram Abisai Gómez Hernández</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520889-5</td><td>Elizabeth Gutiérrez Jiménez</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520855-6</td><td>Edwin Hernández Domínguez</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520081-9</td><td>Jesús Aldemir Hernández Zepahua</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520083-5</td><td>Carlos Yamil Juárez Pérez</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520063-7</td><td>Ángel Daniel López Ramos</td><td>208-MODI23</td></tr>
+                        <tr class="hidden-row"><td>242520761-6</td><td>Luis Ángel Luna Olivares</td><td>208-MODI23</td></tr>
+                    </tbody>
+                </table>
+                <div class="toggle-buttons">
+                    <button id="showMoreButton" class="btn primary">Ver más</button>
+                    <button id="showLessButton" class="btn primary" disabled>Ver menos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-buttons">
+        <button class="btn" onclick="scrollToTop()">↑</button>
+        <button class="btn" onclick="scrollToBottom()">↓</button>
+    </div>
+    <script src="/js/estudiantes.js"></script>
+</body>
+</html>

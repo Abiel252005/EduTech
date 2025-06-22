@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faltas por Grupos</title>
+    <link rel="stylesheet" href="panel.css">
+    <!-- Include SheetJS CDN for Excel export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <span class="brand-icon">🏫</span>
+                <span class="brand-name">Panel Administrativo</span>
+            </div>
+            <div class="profile">
+                <img src="https://via.placeholder.com/100" alt="Perfil" class="profile-img">
+                <p class="profile-name">Abiel Ontiveros</p>
+                <p class="profile-role">Dueño</p>
+            </div>
+        </div>
+        <nav>
+            <a href="panel.html" class="nav-link">Administración</a>
+            <a href="estudiantes.html" class="nav-link">Estudiantes</a>
+            <a href="asistencia.html" class="nav-link">Asistencia por Grupos</a>
+            <a href="faltas.html" class="nav-link active">Faltas por Grupos</a>
+            <a href="graficas.html" class="nav-link">Gráficas</a>
+        </nav>
+        <div class="signout">
+            <a href="#">Regresar</a>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="header">
+            <h1>Faltas por Grupos</h1>
+            <div class="header-actions">
+                <button class="btn">?</button>
+                <button class="btn">🔔</button>
+                <button id="exportExcel" class="btn primary">Exportar a Excel</button>
+            </div>
+        </div>
+        <div class="cards-container">
+            <div class="card">
+                <h3>Faltas <a href="#" class="view-link">Ver todo</a></h3>
+                <table id="absencesTable">
+                    <thead>
+                        <tr><th>ID</th><th>Nombre</th><th>Grupo</th><th>Tutor</th><th>Fecha</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>242520454-8</td><td>Ángel Farid Alvarado Pérez</td><td>201-EMEC23</td><td>101</td><td>2025-06-06</td></tr>
+                        <tr><td>242520704-6</td><td>Julio César Amador Hernández</td><td>201-EMEC23</td><td>102</td><td>2025-06-06</td></tr>
+                        <tr><td>242520499-3</td><td>Vanessa Arias Bustamante</td><td>205-INFO23</td><td>201</td><td>2025-06-05</td></tr>
+                        <tr><td>242520407-6</td><td>Dilan Yahir Álvarez Sánchez</td><td>208-MODI23</td><td>301</td><td>2025-06-04</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-buttons">
+        <button class="btn" onclick="scrollToTop()">↑</button>
+        <button class="btn" onclick="scrollToBottom()">↓</button>
+    </div>
+    <script src="/js/faltas.js"></script>
+</body>
+</html>
