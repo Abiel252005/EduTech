@@ -2,6 +2,9 @@ const container = document.querySelector(".container");
 const btnSignIn = document.getElementById("btn-sign-in");
 const btnSignUp = document.getElementById("btn-sign-up");
 const signInForm = document.getElementById("sign-in-form");
+const signUpForm = document.getElementById("sign-up-form");
+const googleSignIn = document.getElementById("google-sign-in");
+const googleSignUp = document.getElementById("google-sign-up");
 
 btnSignIn.addEventListener("click", () => {
     container.classList.remove("toggle");
@@ -11,31 +14,65 @@ btnSignUp.addEventListener("click", () => {
     container.classList.add("toggle");
 });
 
-// Handle sign-in form submission
+// Handle sign-in with email and password
 signInForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    // Redirect to panel.html upon successful sign-in
-    window.location.href = "panel.html";
+    const email = document.getElementById("signin-email").value;
+    const password = document.getElementById("signin-password").value;
+    signInWithEmailPassword(email, password);
 });
 
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+// Handle sign-up with email and password
+signUpForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("signup-email").value;
+    const password = document.getElementById("signup-password").value;
+    signUpWithEmailPassword(email, password);
+});
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyChssYWkaV_YlH_ZPW4bdvNKlDS5TaHPZU",
-    authDomain: "edutech-ad4f9.firebaseapp.com",
-    projectId: "edutech-ad4f9",
-    storageBucket: "edutech-ad4f9.firebasestorage.app",
-    messagingSenderId: "493756404164",
-    appId: "1:493756404164:web:28a89511bd0dfa2ca45491",
-    measurementId: "G-YDKN6WY7CQ"
-  };
+// Sign in with email and password
+function signInWithEmailPassword(email, password) {
+    auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("Usuario ha iniciado sesión:", user.email);
+            window.location.href = "panel.html";
+        })
+        .catch((error) => {
+            console.error("Error al iniciar sesión:", error.message);
+            alert("Error al iniciar sesión: " + error.message);
+        });
+}
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+// Sign up with email and password
+function signUpWithEmailPassword(email, password) {
+    auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("Usuario registrado:", user.email);
+            window.location.href = "panel.html";
+        })
+        .catch((error) => {
+            console.error("Error al registrar:", error.message);
+            alert("Error al registrar: " + error.message);
+        });
+}
+
+// Sign in with Google
+function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+        .then((result) => {
+            const user = result.user;
+            console.log("Inicio de sesión con Google exitoso:", user.displayName);
+            window.location.href = "panel.html";
+        })
+        .catch((error) => {
+            console.error("Error al iniciar sesión con Google:", error.message);
+            alert("Error al iniciar sesión con Google: " + error.message);
+        });
+}
+
+// Connect Google sign-in and sign-up buttons
+googleSignIn.addEventListener("click", signInWithGoogle);
+googleSignUp.addEventListener("click", signInWithGoogle); // Same flow for simplicity
