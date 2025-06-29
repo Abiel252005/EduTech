@@ -98,11 +98,12 @@ signInForm.addEventListener("submit", async (e) => {
             }
         }
 
-        await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log("Inicio de sesión exitoso para:", userCredential.user.email);
         window.location.href = "/Dashboard/panel.html";
     } catch (error) {
         console.error("Error al iniciar sesión:", error.message);
-        alert("Nombre de usuario/correo o contraseña incorrectos");
+        alert("Error al iniciar sesión: " + error.message);
     }
 });
 
@@ -146,32 +147,21 @@ signUpForm.addEventListener("submit", async (e) => {
         }
 
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+        console.log("Usuario registrado exitosamente:", userCredential.user.email);
 
-        await setDoc(doc(db, "users", user.uid), {
+        await setDoc(doc(db, "users", userCredential.user.uid), {
             username: username,
             email: email,
             name: name,
             createdAt: serverTimestamp()
         });
+        console.log("Datos guardados en Firestore para UID:", userCredential.user.uid);
 
         alert("¡Registro exitoso! Por favor, inicia sesión.");
         container.classList.remove("toggle");
     } catch (error) {
         console.error("Error al registrar:", error.message);
-        let errorMessage = "Error al registrar. Inténtalo de nuevo.";
-        if (error.code === "auth/email-already-in-use") {
-            errorMessage = "El correo ya está registrado.";
-        } else if (error.code === "auth/invalid-email") {
-            errorMessage = "El correo electrónico no es válido.";
-        } else if (error.code === "auth/weak-password") {
-            errorMessage = "La contraseña debe tener al menos 6 caracteres.";
-        } else if (error.code === "permission-denied") {
-            errorMessage = "No tienes permiso para guardar datos. Verifica las reglas de Firestore.";
-        } else {
-            errorMessage = `Error: ${error.message}`;
-        }
-        alert(errorMessage);
+        alert("Error al registrar: " + error.message);
     }
 });
 
@@ -185,41 +175,46 @@ async function handleGoogleAuth() {
     provider.addScope('email');
 
     try {
-        // Use redirect to avoid popup issues
+        console.log("Iniciando autenticación con Google...");
         await signInWithRedirect(auth, provider);
     } catch (error) {
         console.error("Error initiating Google sign-in:", error.message);
         alert("Error al iniciar la autenticación con Google: " + error.message);
         return;
     }
-
-    // Handle the redirect result
-    getRedirectResult(auth)
-        .then(async (result) => {
-            if (result && result.user) {
-                const user = result.user;
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDocs(userDocRef);
-                if (!userDoc.exists()) {
-                    await setDoc(userDocRef, {
-                        username: user.email.split("@")[0],
-                        email: user.email,
-                        name: user.displayName || "Google User",
-                        createdAt: serverTimestamp()
-                    });
-                }
-                console.log("Registro/inicio de sesión con Google exitoso:", user.displayName);
-                window.location.href = "/Dashboard/panel.html";
-            } else {
-                console.error("No user found in redirect result");
-                alert("No se pudo completar la autenticación con Google.");
-            }
-        })
-        .catch((error) => {
-            console.error("Error processing Google sign-in:", error.message);
-            alert("Error al procesar la autenticación con Google: " + error.message);
-        });
 }
+
+// Handle the redirect result on page load or after redirect
+window.addEventListener('load', async () => {
+    try {
+        const result = await getRedirectResult(auth);
+        if (result && result.user) {
+            const user = result.user;
+            console.log("Usuario obtenido de redirección:", user.email);
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDocs(userDocRef);
+            if (!userDoc.exists()) {
+                console.log("Guardando nuevo usuario en Firestore...");
+                await setDoc(userDocRef, {
+                    username: user.email.split("@")[0],
+                    email: user.email,
+                    name: user.displayName || "Google User",
+                    createdAt: serverTimestamp()
+                });
+                console.log("Datos guardados en Firestore para UID:", user.uid);
+            } else {
+                console.log("Usuario ya existe en Firestore:", user.email);
+            }
+            window.location.href = "/Dashboard/panel.html";
+        } else if (result && result.error) {
+            console.error("Error en el resultado de redirección:", result.error.message);
+            alert("Error al procesar la autenticación con Google: " + result.error.message);
+        }
+    } catch (error) {
+        console.error("Error procesando redirección:", error.message);
+        alert("Error al procesar la autenticación con Google: " + error.message);
+    }
+});
 
 // Connect Google sign-in and sign-up buttons
 googleSignIn.addEventListener("click", handleGoogleAuth);
