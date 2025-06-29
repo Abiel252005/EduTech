@@ -1,4 +1,4 @@
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import { getFirestore, collection, where, query, getDocs, setDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const auth = getAuth();
@@ -69,28 +69,24 @@ signInForm.addEventListener("submit", async (e) => {
     const identifier = document.getElementById("signin-username").value;
     const password = document.getElementById("signin-password").value;
 
-    // Validate identifier (username or email)
     if (!identifier.trim()) {
         alert("Por favor, ingrese un nombre de usuario o correo electrónico");
         return;
     }
 
     try {
-        // Allow admin user to bypass password validation
         if ((identifier === "admin" || identifier === "admin@example.com") && password === "123") {
             await signInWithEmailAndPassword(auth, "admin@example.com", "123");
             window.location.href = "/Dashboard/panel.html";
             return;
         }
 
-        // Validate password
         if (!passwordRegex.test(password)) {
             alert("La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un carácter especial");
             return;
         }
 
         let email = identifier;
-        // Check if identifier is a username
         if (!emailRegex.test(identifier)) {
             const usernameQuery = query(collection(db, "users"), where("username", "==", identifier));
             const usernameSnapshot = await getDocs(usernameQuery);
@@ -102,12 +98,12 @@ signInForm.addEventListener("submit", async (e) => {
             }
         }
 
-        // Sign in with email and password
-        await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log("Inicio de sesión exitoso para:", userCredential.user.email);
         window.location.href = "/Dashboard/panel.html";
     } catch (error) {
         console.error("Error al iniciar sesión:", error.message);
-        alert("Nombre de usuario/correo o contraseña incorrectos");
+        alert("Error al iniciar sesión: " + error.message);
     }
 });
 
@@ -119,32 +115,24 @@ signUpForm.addEventListener("submit", async (e) => {
     const email = document.getElementById("signup-email").value;
     const password = document.getElementById("signup-password").value;
 
-    // Validate name
     if (!name.trim()) {
         alert("Por favor, ingrese su nombre");
         return;
     }
-
-    // Validate username
     if (!username.trim()) {
         alert("Por favor, ingrese un nombre de usuario");
         return;
     }
-
-    // Validate email
     if (!emailRegex.test(email)) {
         alert("Por favor, ingrese un correo electrónico válido");
         return;
     }
-
-    // Validate password
     if (!passwordRegex.test(password)) {
         alert("La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un carácter especial");
         return;
     }
 
     try {
-        // Check if username or email already exists
         const usernameQuery = query(collection(db, "users"), where("username", "==", username));
         const usernameSnapshot = await getDocs(usernameQuery);
         if (!usernameSnapshot.empty) {
@@ -158,20 +146,18 @@ signUpForm.addEventListener("submit", async (e) => {
             return;
         }
 
-        // Create new user in Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+        console.log("Usuario registrado exitosamente:", userCredential.user.email);
 
-        // Store additional user data in Firestore
-        await setDoc(doc(db, "users", user.uid), {
+        await setDoc(doc(db, "users", userCredential.user.uid), {
             username: username,
             email: email,
             name: name,
             createdAt: serverTimestamp()
         });
+        console.log("Datos guardados en Firestore para UID:", userCredential.user.uid);
 
         alert("¡Registro exitoso! Por favor, inicia sesión.");
-        // Return to login form
         container.classList.remove("toggle");
     } catch (error) {
         console.error("Error al registrar:", error.message);
@@ -189,41 +175,66 @@ signUpForm.addEventListener("submit", async (e) => {
     }
 });
 
-// Sign in with Google
-function signInWithGoogle() {
+// Handle Google sign-in/registration
+async function handleGoogleAuth() {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({
-        prompt: 'select_account' // Force account selection prompt
+        prompt: 'select_account'
     });
     provider.addScope('profile');
     provider.addScope('email');
-    signInWithPopup(auth, provider)
-        .then(async (result) => {
+
+    try {
+        console.log("Iniciando autenticación con Google...");
+        if (!navigator.onLine) {
+            throw new Error("No hay conexión a internet.");
+        }
+        await signInWithRedirect(auth, provider);
+    } catch (error) {
+        console.error("Error al iniciar la autenticación con Google:", error.message);
+        alert("Error al iniciar la autenticación con Google: " + error.message);
+    }
+}
+
+// Handle the redirect result on page load or after redirect
+window.addEventListener('load', async () => {
+    try {
+        const result = await getRedirectResult(auth);
+        if (result && result.user) {
             const user = result.user;
-            // Check if user exists in Firestore, if not, add them
-            const userDoc = await getDocs(doc(db, "users", user.uid));
+            console.log("Usuario obtenido de redirección:", user.email);
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDocs(userDocRef);
             if (!userDoc.exists()) {
-                await setDoc(doc(db, "users", user.uid), {
-                    username: user.email.split("@")[0], // Default username from email
+                console.log("Guardando nuevo usuario en Firestore...");
+                await setDoc(userDocRef, {
+                    username: user.email.split("@")[0],
                     email: user.email,
                     name: user.displayName || "Google User",
                     createdAt: serverTimestamp()
                 });
+                console.log("Datos guardados en Firestore para UID:", user.uid);
+            } else {
+                console.log("Usuario ya existe en Firestore:", user.email);
             }
-            console.log("Inicio de sesión con Google exitoso:", user.displayName);
             window.location.href = "/Dashboard/panel.html";
-        })
-        .catch((error) => {
-            console.error("Error al iniciar sesión con Google:", error.message);
-            alert("Error al iniciar sesión con Google: " + error.message);
-        });
-}
+        } else if (result && result.error) {
+            console.error("Error en el resultado de redirección:", result.error.message);
+            alert("Error al procesar la autenticación con Google: " + result.error.message);
+        } else {
+            console.log("No se detectó resultado de redirección.");
+        }
+    } catch (error) {
+        console.error("Error procesando redirección:", error.message);
+        alert("Error al procesar la autenticación con Google: " + error.message);
+    }
+});
 
 // Connect Google sign-in and sign-up buttons
-googleSignIn.addEventListener("click", signInWithGoogle);
-googleSignUp.addEventListener("click", signInWithGoogle);
+googleSignIn.addEventListener("click", handleGoogleAuth);
+googleSignUp.addEventListener("click", handleGoogleAuth);
 
-// Handle sign-out (for testing, can be moved to dashboard)
+// Handle sign-out (for testing)
 const signOutButton = document.createElement("button");
 signOutButton.textContent = "Cerrar Sesión (Test)";
 signOutButton.style.position = "absolute";
@@ -233,7 +244,7 @@ signOutButton.addEventListener("click", async () => {
     try {
         await signOut(auth);
         alert("Sesión cerrada exitosamente");
-        window.location.href = "/"; // Redirect to login page
+        window.location.href = "/";
     } catch (error) {
         console.error("Error al cerrar sesión:", error.message);
         alert("Error al cerrar sesión: " + error.message);
