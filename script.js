@@ -182,6 +182,9 @@ signUpForm.addEventListener("submit", async (e) => {
 // Sign in with Google
 function signInWithGoogle() {
     const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({
+        prompt: 'select_account' // Force account selection prompt
+    });
     signInWithPopup(auth, provider)
         .then(async (result) => {
             const user = result.user;
