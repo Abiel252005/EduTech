@@ -158,7 +158,7 @@ signUpForm.addEventListener("submit", async (e) => {
             return;
         }
 
-        // Create new user
+        // Create new user in Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
@@ -175,7 +175,17 @@ signUpForm.addEventListener("submit", async (e) => {
         container.classList.remove("toggle");
     } catch (error) {
         console.error("Error al registrar:", error.message);
-        alert("Error al registrar: " + error.message);
+        let errorMessage = "Error al registrar. Inténtalo de nuevo.";
+        if (error.code === "auth/email-already-in-use") {
+            errorMessage = "El correo ya está registrado.";
+        } else if (error.code === "auth/invalid-email") {
+            errorMessage = "El correo electrónico no es válido.";
+        } else if (error.code === "auth/weak-password") {
+            errorMessage = "La contraseña debe tener al menos 6 caracteres.";
+        } else if (error.code === "permission-denied") {
+            errorMessage = "No tienes permiso para guardar datos. Verifica las reglas de Firestore.";
+        }
+        alert(errorMessage);
     }
 });
 
@@ -185,6 +195,8 @@ function signInWithGoogle() {
     provider.setCustomParameters({
         prompt: 'select_account' // Force account selection prompt
     });
+    provider.addScope('profile');
+    provider.addScope('email');
     signInWithPopup(auth, provider)
         .then(async (result) => {
             const user = result.user;
