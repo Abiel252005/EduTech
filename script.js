@@ -189,10 +189,10 @@ async function handleGoogleAuth() {
         if (!navigator.onLine) {
             throw new Error("No hay conexión a internet.");
         }
-        // Obtener la URL actual para verificar el entorno
         const currentUrl = window.location.href;
         console.log("URL actual:", currentUrl);
-        await signInWithRedirect(auth, provider);
+        // Forzar el redirect URI explícito
+        await signInWithRedirect(auth, provider, { redirectUri: 'https://edutech-conalep.netlify.app/__/auth/handler' });
     } catch (error) {
         console.error("Error al iniciar la autenticación con Google:", error.message);
         alert("Error al iniciar la autenticación con Google: " + error.message);
@@ -202,7 +202,7 @@ async function handleGoogleAuth() {
 // Handle the redirect result on page load or after redirect
 window.addEventListener('load', async () => {
     try {
-        console.log("Procesando resultado de redirección...");
+        console.log("Procesando resultado de redirección... URL actual:", window.location.href);
         const result = await getRedirectResult(auth);
         if (result && result.user) {
             const user = result.user;
