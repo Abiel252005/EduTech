@@ -1,3 +1,9 @@
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getFirestore, collection, where, query, getDocs, setDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+const auth = getAuth();
+const db = getFirestore();
+
 const container = document.querySelector(".container");
 const btnSignIn = document.getElementById("btn-sign-in");
 const btnSignUp = document.getElementById("btn-sign-up");
@@ -5,11 +11,6 @@ const signInForm = document.getElementById("sign-in-form");
 const signUpForm = document.getElementById("sign-up-form");
 const googleSignIn = document.getElementById("google-sign-in");
 const googleSignUp = document.getElementById("google-sign-up");
-
-// Default admin user
-const users = [
-    { username: "admin", email: "admin@example.com", password: "123", name: "Admin" }
-];
 
 // Email validation regex
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -63,7 +64,7 @@ btnSignUp.addEventListener("click", () => {
 });
 
 // Handle sign-in form submission
-signInForm.addEventListener("submit", (e) => {
+signInForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const identifier = document.getElementById("signin-username").value;
     const password = document.getElementById("signin-password").value;
@@ -74,29 +75,44 @@ signInForm.addEventListener("submit", (e) => {
         return;
     }
 
-    // Allow admin user to bypass password validation
-    if ((identifier === "admin" || identifier === "admin@example.com") && password === "123") {
-        window.location.href = "/Dashboard/panel.html";
-        return;
-    }
+    try {
+        // Allow admin user to bypass password validation
+        if ((identifier === "admin" || identifier === "admin@example.com") && password === "123") {
+            await signInWithEmailAndPassword(auth, "admin@example.com", "123");
+            window.location.href = "/Dashboard/panel.html";
+            return;
+        }
 
-    // Validate password
-    if (!passwordRegex.test(password)) {
-        alert("La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un carácter especial");
-        return;
-    }
+        // Validate password
+        if (!passwordRegex.test(password)) {
+            alert("La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un carácter especial");
+            return;
+        }
 
-    // Check if identifier matches username or email and password matches
-    const user = users.find(u => (u.username === identifier || u.email === identifier) && u.password === password);
-    if (user) {
+        let email = identifier;
+        // Check if identifier is a username
+        if (!emailRegex.test(identifier)) {
+            const usernameQuery = query(collection(db, "users"), where("username", "==", identifier));
+            const usernameSnapshot = await getDocs(usernameQuery);
+            if (!usernameSnapshot.empty) {
+                email = usernameSnapshot.docs[0].data().email;
+            } else {
+                alert("Nombre de usuario o correo no encontrado");
+                return;
+            }
+        }
+
+        // Sign in with email and password
+        await signInWithEmailAndPassword(auth, email, password);
         window.location.href = "/Dashboard/panel.html";
-    } else {
+    } catch (error) {
+        console.error("Error al iniciar sesión:", error.message);
         alert("Nombre de usuario/correo o contraseña incorrectos");
     }
 });
 
 // Handle sign-up form submission
-signUpForm.addEventListener("submit", (e) => {
+signUpForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const name = document.getElementById("signup-name").value;
     const username = document.getElementById("signup-username").value;
@@ -127,31 +143,85 @@ signUpForm.addEventListener("submit", (e) => {
         return;
     }
 
-    // Check if username or email already exists
-    if (users.some(u => u.username === username)) {
-        alert("El nombre de usuario ya está registrado");
-        return;
+    try {
+        // Check if username or email already exists
+        const usernameQuery = query(collection(db, "users"), where("username", "==", username));
+        const usernameSnapshot = await getDocs(usernameQuery);
+        if (!usernameSnapshot.empty) {
+            alert("El nombre de usuario ya está registrado");
+            return;
+        }
+        const emailQuery = query(collection(db, "users"), where("email", "==", email));
+        const emailSnapshot = await getDocs(emailQuery);
+        if (!emailSnapshot.empty) {
+            alert("El correo ya está registrado");
+            return;
+        }
+
+        // Create new user
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Store additional user data in Firestore
+        await setDoc(doc(db, "users", user.uid), {
+            username: username,
+            email: email,
+            name: name,
+            createdAt: serverTimestamp()
+        });
+
+        alert("¡Registro exitoso! Por favor, inicia sesión.");
+        // Return to login form
+        container.classList.remove("toggle");
+    } catch (error) {
+        console.error("Error al registrar:", error.message);
+        alert("Error al registrar: " + error.message);
     }
-    if (users.some(u => u.email === email)) {
-        alert("El correo ya está registrado");
-        return;
+});
+
+// Sign in with Google
+function signInWithGoogle() {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+        .then(async (result) => {
+            const user = result.user;
+            // Check if user exists in Firestore, if not, add them
+            const userDoc = await getDocs(doc(db, "users", user.uid));
+            if (!userDoc.exists()) {
+                await setDoc(doc(db, "users", user.uid), {
+                    username: user.email.split("@")[0], // Default username from email
+                    email: user.email,
+                    name: user.displayName || "Google User",
+                    createdAt: serverTimestamp()
+                });
+            }
+            console.log("Inicio de sesión con Google exitoso:", user.displayName);
+            window.location.href = "/Dashboard/panel.html";
+        })
+        .catch((error) => {
+            console.error("Error al iniciar sesión con Google:", error.message);
+            alert("Error al iniciar sesión con Google: " + error.message);
+        });
+}
+
+// Connect Google sign-in and sign-up buttons
+googleSignIn.addEventListener("click", signInWithGoogle);
+googleSignUp.addEventListener("click", signInWithGoogle);
+
+// Handle sign-out (for testing, can be moved to dashboard)
+const signOutButton = document.createElement("button");
+signOutButton.textContent = "Cerrar Sesión (Test)";
+signOutButton.style.position = "absolute";
+signOutButton.style.top = "10px";
+signOutButton.style.right = "10px";
+signOutButton.addEventListener("click", async () => {
+    try {
+        await signOut(auth);
+        alert("Sesión cerrada exitosamente");
+        window.location.href = "/"; // Redirect to login page
+    } catch (error) {
+        console.error("Error al cerrar sesión:", error.message);
+        alert("Error al cerrar sesión: " + error.message);
     }
-
-    // Add new user
-    users.push({ username: username, email: email, password: password, name: name });
-    alert("¡Registro exitoso! Por favor, inicia sesión.");
-    // Return to login form
-    container.classList.remove("toggle");
 });
-
-// Handle Google sign-in (simulated)
-googleSignIn.addEventListener("click", () => {
-    console.log("Google Sign-In clicked");
-    window.location.href = "/Dashboard/panel.html";
-});
-
-// Handle Google sign-up (simulated)
-googleSignUp.addEventListener("click", () => {
-    console.log("Google Sign-Up clicked");
-    window.location.href = "/Dashboard/panel.html";
-});
+document.body.appendChild(signOutButton);
