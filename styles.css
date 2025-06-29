@@ -1,11 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-*{
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Montserrat", sans-serif;
 }
-body{
+
+body {
     width: 100%;
     height: 100vh;
     display: flex;
@@ -13,7 +15,8 @@ body{
     align-items: center;
     background-color: #F0F4F3;
 }
-.container{
+
+.container {
     width: 800px;
     height: 500px;
     display: flex;
@@ -21,13 +24,15 @@ body{
     background-color: white;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 0 10px rgb(0, 0,0,0.3)
+    box-shadow: 0 0 10px rgb(0, 0, 0, 0.3)
 }
-.container-form{
+
+.container-form {
     width: 100%;
     overflow: hidden;
 }
-.container-form form{
+
+.container-form form {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -35,26 +40,31 @@ body{
     align-items: center;
     transition: transform 0.5s ease-in;
 }
-.container-form h2{
+
+.container-form h2 {
     font-size: 30px;
     margin-bottom: 20px;
 }
-.social-networks{
+
+.social-networks {
     display: flex;
     gap: 12px;
     margin-bottom: 25px;
 }
-.social-networks ion-icon{
+
+.social-networks ion-icon {
     border: 1px solid #C9CCCB;
     border-radius: 6px;
     padding: 8px;
     cursor: pointer;
 }
-.container-form span{
+
+.container-form span {
     font-size: 12px;
     margin-bottom: 15px;
 }
-.container-input{
+
+.container-input {
     width: 300px;
     height: 40px;
     margin-bottom: 10px;
@@ -65,44 +75,50 @@ body{
     padding: 0 15px;
     background-color: #EEEEEE;
 }
-.container-input input{
+
+.container-input input {
     border: none;
     outline: none;
     width: 100%;
     height: 100%;
     background-color: inherit;
 }
-.container-form a{
+
+.container-form a {
     color: black;
-    font-size:  14px;
+    font-size: 14px;
     margin-bottom: 20px;
     margin-top: 5px;
 }
-.button{
+
+.button {
     width: 170px;
     height: 45px;
     font-size: 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;  
-    background-color: #3AB397;  
+    margin-top: 10px;
+    background-color: #3AB397;
     color: white;
 }
+
 /*Animation form*/
 
-.sign-up{
+.sign-up {
     transform: translateX(-100%);
 }
-.container.toggle .sign-in{
+
+.container.toggle .sign-in {
     transform: translateX(100%);
 }
-.container.toggle .sign-up{
+
+.container.toggle .sign-up {
     transform: translateX(0);
 }
 
 /*Welcome*/
-.container-welcome{
+.container-welcome {
     position: absolute;
     width: 50%;
     height: 100%;
@@ -114,12 +130,14 @@ body{
     overflow: hidden;
     border-radius: 50% 0 0 50%;
 }
-.container.toggle .container-welcome{
+
+.container.toggle .container-welcome {
     transform: translateX(0);
     border-radius: 0 50% 50% 0;
     background-color: #3AA8AD;
 }
-.container-welcome .welcome{
+
+.container-welcome .welcome {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -129,24 +147,108 @@ body{
     color: white;
     transition: transform 0.5s ease-in-out;
 }
-.welcome-sign-in{
+
+.welcome-sign-in {
     transform: translateX(100%);
 }
-.container-welcome h3{
+
+.container-welcome h3 {
     font-size: 40px;
 }
-.container-welcome p{
+
+.container-welcome p {
     font-size: 14px;
     text-align: center;
 }
-.container-welcome .button{
+
+.container-welcome .button {
     border: 2px solid white;
     background-color: transparent;
 }
 
-.container.toggle .welcome-sign-in{
+.container.toggle .welcome-sign-in {
     transform: translateX(0);
 }
-.container.toggle .welcome-sign-up{
+
+.container.toggle .welcome-sign-up {
     transform: translateX(-100%);
+}
+
+
+.password-requirements {
+    margin-top: 10px;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.password-requirements ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.password-requirements li {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    margin-bottom: 8px;
+    color: #cc0000;
+    transition: color 0.3s ease;
+}
+
+.password-requirements li.valid {
+    color: #00cc00;
+}
+
+.password-requirements li::before {
+    content: "○";
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 8px;
+    font-size: 1em;
+    line-height: 1;
+    text-align: center;
+    color: #cc0000;
+    transition: color 0.3s ease;
+}
+
+.password-requirements li.valid::before {
+    content: "●";
+    color: #00cc00;
+}
+
+@media (max-width: 600px) {
+    .password-requirements li {
+        font-size: 0.85em;
+        margin-bottom: 6px;
+    }
+
+    .password-requirements li::before {
+        width: 10px;
+        height: 10px;
+        font-size: 0.9em;
+    }
+}
+
+.container-input {
+    position: relative;
+}
+
+.container-input .bi-eye,
+.container-input .bi-eye-slash {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.container-input input {
+    width: 100%;
+    padding-right: 40px;
+    /* Space for the eye icon */
 }
