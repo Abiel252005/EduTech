@@ -1,4 +1,4 @@
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import { getFirestore, collection, where, query, getDocs, setDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const auth = getAuth();
@@ -175,38 +175,51 @@ signUpForm.addEventListener("submit", async (e) => {
     }
 });
 
-// Sign in with Google
-function signInWithGoogle() {
+// Handle Google sign-in/registration
+async function handleGoogleAuth() {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({
         prompt: 'select_account'
     });
     provider.addScope('profile');
     provider.addScope('email');
-    signInWithPopup(auth, provider)
+
+    try {
+        // Use redirect instead of popup to avoid COOP issues
+        await signInWithRedirect(auth, provider);
+    } catch (error) {
+        console.error("Error initiating Google sign-in:", error.message);
+        alert("Error al iniciar sesión con Google: " + error.message);
+        return;
+    }
+
+    // Handle the redirect result
+    getRedirectResult(auth)
         .then(async (result) => {
-            const user = result.user;
-            const userDoc = await getDocs(doc(db, "users", user.uid));
-            if (!userDoc.exists()) {
-                await setDoc(doc(db, "users", user.uid), {
-                    username: user.email.split("@")[0],
-                    email: user.email,
-                    name: user.displayName || "Google User",
-                    createdAt: serverTimestamp()
-                });
+            if (result.user) {
+                const user = result.user;
+                const userDoc = await getDocs(doc(db, "users", user.uid));
+                if (!userDoc.exists()) {
+                    await setDoc(doc(db, "users", user.uid), {
+                        username: user.email.split("@")[0],
+                        email: user.email,
+                        name: user.displayName || "Google User",
+                        createdAt: serverTimestamp()
+                    });
+                }
+                console.log("Registro/inicio de sesión con Google exitoso:", user.displayName);
+                window.location.href = "/Dashboard/panel.html";
             }
-            console.log("Inicio de sesión con Google exitoso:", user.displayName);
-            window.location.href = "/Dashboard/panel.html";
         })
         .catch((error) => {
-            console.error("Error al iniciar sesión con Google:", error.message);
-            alert("Error al iniciar sesión con Google: " + error.message);
+            console.error("Error processing Google sign-in:", error.message);
+            alert("Error al procesar la autenticación con Google: " + error.message);
         });
 }
 
 // Connect Google sign-in and sign-up buttons
-googleSignIn.addEventListener("click", signInWithGoogle);
-googleSignUp.addEventListener("click", signInWithGoogle);
+googleSignIn.addEventListener("click", handleGoogleAuth);
+googleSignUp.addEventListener("click", handleGoogleAuth);
 
 // Handle sign-out (for testing)
 const signOutButton = document.createElement("button");
