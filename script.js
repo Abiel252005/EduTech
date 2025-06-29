@@ -176,6 +176,10 @@ async function handleGoogleAuth() {
 
     try {
         console.log("Iniciando autenticación con Google...");
+        // Verificar si la red está disponible
+        if (!navigator.onLine) {
+            throw new Error("No hay conexión a internet.");
+        }
         await signInWithRedirect(auth, provider);
     } catch (error) {
         console.error("Error al iniciar la autenticación con Google:", error.message);
