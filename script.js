@@ -178,9 +178,8 @@ async function handleGoogleAuth() {
         console.log("Iniciando autenticación con Google...");
         await signInWithRedirect(auth, provider);
     } catch (error) {
-        console.error("Error initiating Google sign-in:", error.message);
+        console.error("Error al iniciar la autenticación con Google:", error.message);
         alert("Error al iniciar la autenticación con Google: " + error.message);
-        return;
     }
 }
 
@@ -209,6 +208,8 @@ window.addEventListener('load', async () => {
         } else if (result && result.error) {
             console.error("Error en el resultado de redirección:", result.error.message);
             alert("Error al procesar la autenticación con Google: " + result.error.message);
+        } else {
+            console.log("No se detectó resultado de redirección.");
         }
     } catch (error) {
         console.error("Error procesando redirección:", error.message);
