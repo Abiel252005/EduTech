@@ -185,22 +185,23 @@ async function handleGoogleAuth() {
     provider.addScope('email');
 
     try {
-        // Use redirect instead of popup to avoid COOP issues
+        // Use redirect to avoid popup issues
         await signInWithRedirect(auth, provider);
     } catch (error) {
         console.error("Error initiating Google sign-in:", error.message);
-        alert("Error al iniciar sesión con Google: " + error.message);
+        alert("Error al iniciar la autenticación con Google: " + error.message);
         return;
     }
 
     // Handle the redirect result
     getRedirectResult(auth)
         .then(async (result) => {
-            if (result.user) {
+            if (result && result.user) {
                 const user = result.user;
-                const userDoc = await getDocs(doc(db, "users", user.uid));
+                const userDocRef = doc(db, "users", user.uid);
+                const userDoc = await getDocs(userDocRef);
                 if (!userDoc.exists()) {
-                    await setDoc(doc(db, "users", user.uid), {
+                    await setDoc(userDocRef, {
                         username: user.email.split("@")[0],
                         email: user.email,
                         name: user.displayName || "Google User",
@@ -209,6 +210,9 @@ async function handleGoogleAuth() {
                 }
                 console.log("Registro/inicio de sesión con Google exitoso:", user.displayName);
                 window.location.href = "/Dashboard/panel.html";
+            } else {
+                console.error("No user found in redirect result");
+                alert("No se pudo completar la autenticación con Google.");
             }
         })
         .catch((error) => {
