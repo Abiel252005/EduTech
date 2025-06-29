@@ -189,6 +189,9 @@ async function handleGoogleAuth() {
         if (!navigator.onLine) {
             throw new Error("No hay conexión a internet.");
         }
+        // Obtener la URL actual para verificar el entorno
+        const currentUrl = window.location.href;
+        console.log("URL actual:", currentUrl);
         await signInWithRedirect(auth, provider);
     } catch (error) {
         console.error("Error al iniciar la autenticación con Google:", error.message);
@@ -199,10 +202,11 @@ async function handleGoogleAuth() {
 // Handle the redirect result on page load or after redirect
 window.addEventListener('load', async () => {
     try {
+        console.log("Procesando resultado de redirección...");
         const result = await getRedirectResult(auth);
         if (result && result.user) {
             const user = result.user;
-            console.log("Usuario obtenido de redirección:", user.email);
+            console.log("Usuario obtenido de redirección:", user.email, "UID:", user.uid);
             const userDocRef = doc(db, "users", user.uid);
             const userDoc = await getDocs(userDocRef);
             if (!userDoc.exists()) {
@@ -219,13 +223,13 @@ window.addEventListener('load', async () => {
             }
             window.location.href = "/Dashboard/panel.html";
         } else if (result && result.error) {
-            console.error("Error en el resultado de redirección:", result.error.message);
+            console.error("Error en el resultado de redirección:", result.error.message, result.error.code);
             alert("Error al procesar la autenticación con Google: " + result.error.message);
         } else {
-            console.log("No se detectó resultado de redirección.");
+            console.log("No se detectó resultado de redirección. URL actual:", window.location.href);
         }
     } catch (error) {
-        console.error("Error procesando redirección:", error.message);
+        console.error("Error procesando redirección:", error.message, error.code);
         alert("Error al procesar la autenticación con Google: " + error.message);
     }
 });
