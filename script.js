@@ -1,8 +1,22 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import { getFirestore, collection, where, query, getDocs, setDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-const auth = getAuth();
-const db = getFirestore();
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyChssYWkaV_YlH_ZPW4bdvNKlDS5TaHPZU",
+    authDomain: "edutech-ad4f9.firebaseapp.com",
+    projectId: "edutech-ad4f9",
+    storageBucket: "edutech-ad4f9.firebasestorage.app",
+    messagingSenderId: "493756404164",
+    appId: "1:493756404164:web:28a89511bd0dfa2ca45491",
+    measurementId: "G-YDKN6WY7CQ"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 const container = document.querySelector(".container");
 const btnSignIn = document.getElementById("btn-sign-in");
@@ -189,10 +203,10 @@ async function handleGoogleAuth() {
         if (!navigator.onLine) {
             throw new Error("No hay conexión a internet.");
         }
-        const currentUrl = window.location.href;
-        console.log("URL actual:", currentUrl);
-        // Forzar el redirect URI explícito
-        await signInWithRedirect(auth, provider, { redirectUri: 'https://edutech-conalep.netlify.app/__/auth/handler' });
+        // Consider removing the explicit redirectUri unless absolutely necessary
+        // await signInWithRedirect(auth, provider, { redirectUri: 'https://edutech-conalep.netlify.app/__/auth/handler' });
+        await signInWithRedirect(auth, provider);
+
     } catch (error) {
         console.error("Error al iniciar la autenticación con Google:", error.message);
         alert("Error al iniciar la autenticación con Google: " + error.message);
