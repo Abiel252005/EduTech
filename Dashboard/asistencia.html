@@ -4,30 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asistencia por Grupos</title>
-    <link rel="stylesheet" href="panel.css">
+    <link rel="stylesheet" href="/css/panel.css">
+    <link rel="stylesheet" href="/css/modal.css">
 </head>
 <body>
-    <div class="sidebar">
+   <div class="sidebar">
         <div class="sidebar-header">
             <div class="brand">
                 <span class="brand-icon">🏫</span>
                 <span class="brand-name">Panel Administrativo</span>
             </div>
             <div class="profile">
-                <img src="https://via.placeholder.com/100" alt="Perfil" class="profile-img">
+                <img src="https://via.placeholder.com/80" alt="Perfil" class="profile-img">
                 <p class="profile-name">Abiel Ontiveros</p>
                 <p class="profile-role">Dueño</p>
             </div>
         </div>
         <nav>
             <a href="panel.html" class="nav-link">Administración</a>
-            <a href="estudiantes.html" class="nav-link">Estudiantes</a>
+            <a href="estudiantes.html" class="nav-link ">Estudiantes</a>
             <a href="asistencia.html" class="nav-link active">Asistencia por Grupos</a>
             <a href="faltas.html" class="nav-link">Faltas por Grupos</a>
-            <a href="graficas.html" class="nav-link">Gráficas</a>
         </nav>
         <div class="signout">
-            <a href="#">Regresar</a>
+            <a href="/index.html">Regresar</a>
         </div>
     </div>
     <div class="main-content">
@@ -39,62 +39,61 @@
             </div>
         </div>
         <div class="cards-container">
-            <!-- Cards for groups 201 to 214 -->
-            <div class="card" onclick="toggleAttendance('201-EMEC23')">
+            <div class="card emec" onclick="toggleAttendance('201-EMEC23')">
                 <h3 class="card-title">201-EMEC23</h3>
-                <p class="card-text">Presentes: 25</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('202-EMEC23')">
+            <div class="card emec" onclick="toggleAttendance('202-EMEC23')">
                 <h3 class="card-title">202-EMEC23</h3>
-                <p class="card-text">Presentes: 24</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('203-EMEC23')">
+            <div class="card emec" onclick="toggleAttendance('203-EMEC23')">
                 <h3 class="card-title">203-EMEC23</h3>
-                <p class="card-text">Presentes: 23</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('204-EMEC23')">
+            <div class="card info" onclick="toggleAttendance('204-EMEC23')">
                 <h3 class="card-title">204-EMEC23</h3>
-                <p class="card-text">Presentes: 22</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('205-INFO23')">
+            <div class="card info" onclick="toggleAttendance('205-INFO23')">
                 <h3 class="card-title">205-INFO23</h3>
-                <p class="card-text">Presentes: 20</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('206-INFO23')">
+            <div class="card info" onclick="toggleAttendance('206-INFO23')">
                 <h3 class="card-title">206-INFO23</h3>
-                <p class="card-text">Presentes: 19</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('207-INFO23')">
+            <div class="card info" onclick="toggleAttendance('207-INFO23')">
                 <h3 class="card-title">207-INFO23</h3>
-                <p class="card-text">Presentes: 18</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('208-MODI23')">
+            <div class="card modi" onclick="toggleAttendance('208-MODI23')">
                 <h3 class="card-title">208-MODI23</h3>
-                <p class="card-text">Presentes: 21</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('209-MODI23')">
+            <div class="card modi" onclick="toggleAttendance('209-MODI23')">
                 <h3 class="card-title">209-MODI23</h3>
-                <p class="card-text">Presentes: 20</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('210-MODI23')">
+            <div class="card modi" onclick="toggleAttendance('210-MODI23')">
                 <h3 class="card-title">210-MODI23</h3>
-                <p class="card-text">Presentes: 19</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('211-MODI23')">
+            <div class="card modi" onclick="toggleAttendance('211-MODI23')">
                 <h3 class="card-title">211-MODI23</h3>
-                <p class="card-text">Presentes: 18</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('212-MODI23')">
+            <div class="card modi" onclick="toggleAttendance('212-MODI23')">
                 <h3 class="card-title">212-MODI23</h3>
-                <p class="card-text">Presentes: 17</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('213-MODI23')">
+            <div class="card modi" onclick="toggleAttendance('213-MODI23')">
                 <h3 class="card-title">213-MODI23</h3>
-                <p class="card-text">Presentes: 16</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
-            <div class="card" onclick="toggleAttendance('214-MODI23')">
+            <div class="card modi" onclick="toggleAttendance('214-MODI23')">
                 <h3 class="card-title">214-MODI23</h3>
-                <p class="card-text">Presentes: 15</p>
+                <p class="card-text">Presentes: 5</p>
             </div>
         </div>
     </div>
@@ -103,27 +102,30 @@
         <button class="btn" onclick="scrollToBottom()">↓</button>
     </div>
     <!-- Modal -->
-    <div id="attendanceModal" class="modal hidden">
+    <div id="attendanceModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <span class="close-btn" onclick="closeModal()">×</span>
             <h3 class="modal-title">Detalles de Asistencia - <span id="modalGroupName"></span></h3>
             <div class="attendance-controls">
                 <label for="modalAttendanceCount">Presentes:</label>
-                <input type="number" id="modalAttendanceCount" min="0" max="30" value="25" onchange="updateModalAttendance()">
+                <input type="number" id="modalAttendanceCount" min="0" max="5" value="5" onchange="updateModalAttendance()">
                 <button id="saveModalAttendance" class="btn primary">Actualizar</button>
             </div>
-            <table class="details-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Hora de Entrada</th>
-                    </tr>
-                </thead>
-                <tbody id="modalAttendanceTableBody"></tbody>
-            </table>
+            <div class="scrollable-table">
+                <table class="details-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalAttendanceTableBody"></tbody>
+                </table>
+                <button id="loadMoreBtn" class="btn primary" onclick="loadMoreStudents()">Ver más</button>
+            </div>
             <div class="time-edit">
-                <label for="modalEntryTime">Modificar Hora de Entrada:</label>
+                <label for="modalEntryTime">Hora de Entrada para el Grupo:</label>
                 <input type="time" id="modalEntryTime" value="07:00">
                 <button id="saveModalTime" class="btn primary">Guardar</button>
             </div>

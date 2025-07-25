@@ -1,80 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administrativo</title>
-    <link rel="stylesheet" href="panel.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Administrativo</title>
+  <link rel="stylesheet" href="/css/administracion.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/js/administracion.js"></script>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <div class="brand">
-                <span class="brand-icon">🏫</span>
-                <span class="brand-name">Panel Administrativo</span>
-            </div>
-            <div class="profile">
-                <img src="https://via.placeholder.com/100" alt="Perfil" class="profile-img">
-                <p class="profile-name">Abiel Ontiveros</p>
-                <p class="profile-role">Dueño</p>
-            </div>
-        </div>
-        <nav>
-            <a href="panel.html" class="nav-link active">Administración</a>
-            <a href="estudiantes.html" class="nav-link">Estudiantes</a>
-            <a href="asistencia.html" class="nav-link">Asistencia por Grupos</a>
-            <a href="faltas.html" class="nav-link">Faltas por Grupos</a>
-            <a href="graficas.html" class="nav-link">Gráficas</a>
-        </nav>
-        <div class="signout">
-            <a href="/index.html">Regresar</a>
-        </div>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        <span class="brand-icon">🏫</span>
+        <span class="brand-name">Panel Administrativo</span>
+      </div>
+      <div class="profile">
+        <img src="https://via.placeholder.com/80" alt="Perfil" class="profile-img">
+        <p class="profile-name">Abiel Ontiveros</p>
+        <p class="profile-role">Dueño</p>
+      </div>
     </div>
-    <div class="main-content">
-        <div class="header">
-            <h1>Administración</h1>
-            <div class="header-actions">
-                <button class="btn">?</button>
-                <button class="btn">🔔</button>
-            </div>
-        </div>
-        <div class="cards-container">
-            <div class="card">
-                <h3>Próxima Actualización <a href="#" class="view-link">Ver todo</a></h3>
-                <p>Datos de Estudiantes - 02:34 PM, 06 de Junio de 2025</p>
-                <div class="card-content">
-                    <span>📋</span> Actualizando Registros de Administración
-                </div>
-            </div>
-            <div class="card">
-                <h3>Estadísticas de Admin <a href="#" class="view-link">Ver todo</a></h3>
-                <div class="stats">
-                    <p>Usuarios: 1</p>
-                    <p>Activo: Sí</p>
-                </div>
-            </div>
-            <div class="card">
-                <h3>Estado del Sistema</h3>
-                <p>En línea</p>
-            </div>
-            <div class="card">
-                <h3>Recordatorio</h3>
-                <p>Revisar configuración de admin</p>
-                <button class="btn primary">Ir a Configuración</button>
-            </div>
-        </div>
+    <nav class="sidebar-nav">
+      <a href="panel.html" class="nav-link active">Administración</a>
+      <a href="estudiantes.html" class="nav-link">Estudiantes</a>
+      <a href="asistencia.html" class="nav-link">Asistencia por Grupos</a>
+      <a href="faltas.html" class="nav-link">Faltas por Grupos</a>
+    </nav>
+    <div class="signout">
+      <a href="/index.html">Regresar</a>
     </div>
-    <div class="scroll-buttons">
-        <button class="btn" onclick="scrollToTop()">↑</button>
-        <button class="btn" onclick="scrollToBottom()">↓</button>
+  </div>
+
+  <div class="main-content">
+    <div class="header">
+      <h1 class="centered-title">Administración</h1>
+      <div class="header-actions">
+      </div>
     </div>
-    <script>
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        function scrollToBottom() {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        }
-    </script>
+
+    <div class="container">
+      <div class="Estadisticas admin-card">
+        <h3>Estadísticas Generales</h3>
+        <p>Alumnos Totales: <span id="studentCount">1860</span></p>
+        <p>Salones: <span id="roomCount">15</span></p>
+        <p>Carreras: <span id="careerCount">7</span></p>
+      </div>
+
+      <div class="Alumnos-totales admin-card">
+        <h3>Alumnos Totales</h3>
+        <p>Total: <span>1860</span></p>
+      </div>
+
+      <div class="Grafica-del-mes admin-card">
+        <h3>Próxima Actualización <a href="#" class="view-link">Ver todo</a></h3>
+        <p>Datos de Estudiantes - 02:34 PM, 06 de Junio de 2025</p>
+        <div class="card-content">
+          <span>📋</span> Actualizando Registros de Administración
+        </div>
+      </div>
+
+      <div class="Asistencias admin-card">
+        <h3>Porcentaje de Asistencia - Julio 2025</h3>
+        <p>Asistencia: <span id="attendancePercent">88%</span></p>
+        <canvas id="attendanceChart" width="250" height="120"></canvas>
+      </div>
+
+      <div class="Faltas admin-card">
+        <h3>Calendario de Faltas - Julio 2025</h3>
+        <canvas id="calendarChart" width="250" height="120"></canvas>
+      </div>
+
+      <div class="Mini-grafica admin-card">
+        <h3>Porcentajes del Mes Actual</h3>
+        <canvas id="pieChart" width="180" height="90"></canvas>
+      </div>
+
+      <div class="Grafica admin-card">
+        <h3>Gráfica Adicional</h3>
+        <canvas id="extraChart" width="250" height="120"></canvas>
+      </div>
+
+      <div class="Grafica-secundaria admin-card">
+        <h3>Gráfica Secundaria</h3>
+        <canvas id="secondaryChart" width="250" height="120"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para reportes -->
+  <div id="reportModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">×</span>
+      <h2>Reportes Generados</h2>
+      <div id="modalReportList" class="report-list">
+        <ul id="modalReports"></ul>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

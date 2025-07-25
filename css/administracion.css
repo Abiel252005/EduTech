@@ -1,0 +1,346 @@
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #E6F0FA;
+    font-family: 'Arial', sans-serif;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #4CAF50;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px;
+    position: fixed;
+    height: 90vh;
+}
+
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.brand {
+    color: white;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.brand-icon {
+    font-size: 1.8rem;
+    background-color: #388E3C;
+    border-radius: 50%;
+    padding: 8px;
+    display: inline-block;
+}
+
+.brand-name {
+    font-size: 1.3rem;
+    display: block;
+    font-weight: bold;
+}
+
+.profile {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.profile-img {
+    width: 80px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+    border: 2px solid #4CAF50;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.profile-name {
+    color: white;
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.profile-role {
+    color: #B0BEC5;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.sidebar-nav {
+    margin-top: 20px;
+}
+
+.nav-link {
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    text-align: center;
+    background-color: rgba(56, 142, 60, 0.3);
+    font-weight: bold;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: block;
+    font-size: 1rem;
+}
+
+.nav-link.active,
+.nav-link:hover {
+    background-color: #388E3C;
+}
+
+.signout a {
+    color: white;
+    text-align: center;
+    display: block;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: rgba(56, 142, 60, 0.3);
+    margin-top: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    font-size: 1rem;
+}
+
+.signout a:hover {
+    background-color: #4CAF50;
+}
+
+.main-content {
+    margin-left: 270px;
+    padding: 15px;
+    width: calc(100% - 270px);
+    overflow-y: auto;
+    min-height: calc(100% - 30px);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #2E7D32;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.header-actions .btn {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: #4CAF50;
+    margin-left: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.report-count {
+    color: #2E7D32;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Layout de cuadrícula personalizado */
+.container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, auto);
+    row-gap: 40px;
+    column-gap: 30px;
+    padding: 40px;
+    margin: 10px 0;
+    grid-template-areas:
+        "Estadisticas Estadisticas Estadisticas Grafica Grafica"
+        "Alumnos-totales Alumnos-totales Alumnos-totales Grafica Grafica"
+        "Asistencias Faltas Mini-grafica Grafica-secundaria Grafica-secundaria"
+        "Grafica-del-mes Grafica-del-mes Grafica-del-mes Grafica-secundaria Grafica-secundaria"
+        "Grafica-extra Grafica-extra Grafica-extra Grafica-secundaria Grafica-secundaria";
+}
+
+.Estadisticas { grid-area: Estadisticas; background: linear-gradient(135deg, #E8F5E9, #81C784); border: 2px solid #66BB6A; padding: 20px; border-radius: 10px; }
+.Alumnos-totales { grid-area: Alumnos-totales; background: linear-gradient(135deg, #C8E6C9, #A5D6A7); border: 2px solid #81C784; padding: 20px; border-radius: 10px; }
+.Asistencias { grid-area: Asistencias; background: linear-gradient(135deg, #E0F2F1, #80DEEA); border: 2px solid #4DD0E1; padding: 20px; border-radius: 10px; }
+.Faltas { grid-area: Faltas; background: linear-gradient(135deg, #B2DFDB, #4DB6AC); border: 2px solid #26A69A; padding: 20px; border-radius: 10px; }
+.Mini-grafica { grid-area: Mini-grafica; background: linear-gradient(135deg, #B2EBF2, #4FC3F7); border: 2px solid #29B6F6; padding: 20px; border-radius: 10px; }
+.Grafica-del-mes { grid-area: Grafica-del-mes; background: linear-gradient(135deg, #F1F8E9, #9CCC65); border: 2px solid #7CB342; padding: 20px; border-radius: 10px; }
+.Grafica { grid-area: Grafica; background: linear-gradient(135deg, #DCEDC8, #8BC34A); border: 2px solid #689F38; padding: 20px; border-radius: 10px; }
+.Grafica-secundaria { grid-area: Grafica-secundaria; background: linear-gradient(135deg, #F9FBE7, #D4E157); border: 2px solid #AFB42B; padding: 10px; border-radius: 10px; } /* Ajusté padding y gradiente */
+.Grafica-extra { grid-area: Grafica-extra; background: linear-gradient(135deg, #F0F4C3, #CDDC39); border: 2px solid #9E9D24; padding: 20px; border-radius: 10px; }
+
+/* Estilo base para las tarjetas */
+.admin-card {
+    background: none;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.admin-card h3 {
+    color: #2E7D32;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.admin-card p {
+    color: #666;
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+.admin-card .card-content {
+    margin-top: 10px;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.view-link {
+    color: #4CAF50;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.view-link:hover {
+    text-decoration: underline;
+}
+
+.admin-card button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.admin-card button:hover {
+    background-color: #388E3C;
+}
+
+.btn.primary {
+    background-color: #4CAF50;
+}
+
+.btn.primary:hover {
+    background-color: #388E3C;
+}
+
+.btn.secondary {
+    background-color: #ff9800;
+}
+
+.btn.secondary:hover {
+    background-color: #f57c00;
+}
+
+/* Lista de reportes en el modal */
+.report-list {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f1f8e9;
+    border-radius: 6px;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #c8e6c9;
+}
+
+.report-list h4 {
+    color: #2E7D32;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.report-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.report-list li {
+    padding: 6px 0;
+    color: #333;
+    font-size: 0.85rem;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: #4CAF50;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-modal:hover {
+    color: #388E3C;
+}
+
+/* Ajuste para los canvas de los gráficos */
+.admin-card canvas {
+    max-width: 100%;
+    height: auto !important;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Ajuste específico para Grafica-secundaria */
+.Grafica-secundaria canvas {
+    width: 500px !important; /* Reduje el ancho */
+    height: 300px !important; /* Reduje la altura */
+    margin: 5px 0; /* Reduje el margen */
+}

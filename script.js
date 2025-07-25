@@ -1,3 +1,22 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js';
+
+// Configuración de Firebase (debe completarse con credenciales reales)
+const firebaseConfig = {
+  apiKey: "AIzaSyChssYWkaV_YlH_ZPW4bdvNKlDS5TaHPZU",
+  authDomain: "edutech-ad4f9.firebaseapp.com",
+  projectId: "edutech-ad4f9",
+  storageBucket: "edutech-ad4f9.firebasestorage.app",
+  messagingSenderId: "493756404164",
+  appId: "1:493756404164:web:28a89511bd0dfa2ca45491",
+  measurementId: "G-YDKN6WY7CQ"
+};
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const analytics = getAnalytics(app);
+
 const container = document.querySelector(".container");
 const btnSignIn = document.getElementById("btn-sign-in");
 const btnSignUp = document.getElementById("btn-sign-up");
@@ -30,12 +49,14 @@ const passwordChecks = {
 function togglePasswordVisibility(inputId, toggleId) {
     const passwordInput = document.getElementById(inputId);
     const toggleIcon = document.getElementById(toggleId);
-    toggleIcon.addEventListener("click", () => {
-        const type = passwordInput.type === "password" ? "text" : "password";
-        passwordInput.type = type;
-        toggleIcon.classList.toggle("bi-eye", type === "password");
-        toggleIcon.classList.toggle("bi-eye-slash", type === "text");
-    });
+    if (passwordInput && toggleIcon) {
+        toggleIcon.addEventListener("click", () => {
+            const type = passwordInput.type === "password" ? "text" : "password";
+            passwordInput.type = type;
+            toggleIcon.classList.toggle("bi-eye", type === "password");
+            toggleIcon.classList.toggle("bi-eye-slash", type === "text");
+        });
+    }
 }
 
 // Initialize password visibility toggles
@@ -44,32 +65,34 @@ togglePasswordVisibility("signup-password", "signup-toggle-password");
 
 // Real-time password requirement validation
 const signupPasswordInput = document.getElementById("signup-password");
-signupPasswordInput.addEventListener("input", () => {
-    const password = signupPasswordInput.value;
-    document.getElementById("pwd-length").classList.toggle("valid", passwordChecks.length(password));
-    document.getElementById("pwd-uppercase").classList.toggle("valid", passwordChecks.uppercase(password));
-    document.getElementById("pwd-lowercase").classList.toggle("valid", passwordChecks.lowercase(password));
-    document.getElementById("pwd-number").classList.toggle("valid", passwordChecks.number(password));
-    document.getElementById("pwd-special").classList.toggle("valid", passwordChecks.special(password));
-});
+if (signupPasswordInput) {
+    signupPasswordInput.addEventListener("input", () => {
+        const password = signupPasswordInput.value;
+        document.getElementById("pwd-length")?.classList.toggle("valid", passwordChecks.length(password));
+        document.getElementById("pwd-uppercase")?.classList.toggle("valid", passwordChecks.uppercase(password));
+        document.getElementById("pwd-lowercase")?.classList.toggle("valid", passwordChecks.lowercase(password));
+        document.getElementById("pwd-number")?.classList.toggle("valid", passwordChecks.number(password));
+        document.getElementById("pwd-special")?.classList.toggle("valid", passwordChecks.special(password));
+    });
+}
 
 // Toggle between sign-in and sign-up forms
-btnSignIn.addEventListener("click", () => {
-    container.classList.remove("toggle");
+btnSignIn?.addEventListener("click", () => {
+    container?.classList.remove("toggle");
 });
 
-btnSignUp.addEventListener("click", () => {
-    container.classList.add("toggle");
+btnSignUp?.addEventListener("click", () => {
+    container?.classList.add("toggle");
 });
 
 // Handle sign-in form submission
-signInForm.addEventListener("submit", (e) => {
+signInForm?.addEventListener("submit", (e) => {
     e.preventDefault();
-    const identifier = document.getElementById("signin-username").value;
-    const password = document.getElementById("signin-password").value;
+    const identifier = document.getElementById("signin-username")?.value;
+    const password = document.getElementById("signin-password")?.value;
 
     // Validate identifier (username or email)
-    if (!identifier.trim()) {
+    if (!identifier?.trim()) {
         alert("Por favor, ingrese un nombre de usuario o correo electrónico");
         return;
     }
@@ -96,21 +119,21 @@ signInForm.addEventListener("submit", (e) => {
 });
 
 // Handle sign-up form submission
-signUpForm.addEventListener("submit", (e) => {
+signUpForm?.addEventListener("submit", (e) => {
     e.preventDefault();
-    const name = document.getElementById("signup-name").value;
-    const username = document.getElementById("signup-username").value;
-    const email = document.getElementById("signup-email").value;
-    const password = document.getElementById("signup-password").value;
+    const name = document.getElementById("signup-name")?.value;
+    const username = document.getElementById("signup-username")?.value;
+    const email = document.getElementById("signup-email")?.value;
+    const password = document.getElementById("signup-password")?.value;
 
     // Validate name
-    if (!name.trim()) {
+    if (!name?.trim()) {
         alert("Por favor, ingrese su nombre");
         return;
     }
 
     // Validate username
-    if (!username.trim()) {
+    if (!username?.trim()) {
         alert("Por favor, ingrese un nombre de usuario");
         return;
     }
@@ -138,20 +161,36 @@ signUpForm.addEventListener("submit", (e) => {
     }
 
     // Add new user
-    users.push({ username: username, email: email, password: password, name: name });
+    users.push({ username, email, password, name });
     alert("¡Registro exitoso! Por favor, inicia sesión.");
-    // Return to login form
-    container.classList.remove("toggle");
+    container?.classList.remove("toggle");
 });
 
-// Handle Google sign-in (simulated)
-googleSignIn.addEventListener("click", () => {
-    console.log("Google Sign-In clicked");
-    window.location.href = "/Dashboard/panel.html";
-});
+// Handle Google sign-in and sign-up
+function handleGoogleAuth() {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            const user = result.user;
+            // Check if user exists in local array, if not, add them
+            if (!users.some(u => u.email === user.email)) {
+                users.push({
+                    username: user.email.split('@')[0],
+                    email: user.email,
+                    password: null, // Google users don't need local password
+                    name: user.displayName || "Google User"
+                });
+            }
+            console.log('Usuario autenticado con Google:', user);
+            window.location.href = "/Dashboard/panel.html";
+        })
+        .catch((error) => {
+            console.error("Error al autenticar con Google: ", error.message);
+            alert("Error al autenticar con Google: " + error.message);
+        });
+}
 
-// Handle Google sign-up (simulated)
-googleSignUp.addEventListener("click", () => {
-    console.log("Google Sign-Up clicked");
-    window.location.href = "/Dashboard/panel.html";
-});
+googleSignIn?.addEventListener("click", handleGoogleAuth);
+googleSignUp?.addEventListener("click", handleGoogleAuth);
+
+console.log('Autenticación con Google habilitada.');

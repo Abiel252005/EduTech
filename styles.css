@@ -46,18 +46,7 @@ body {
     margin-bottom: 20px;
 }
 
-.social-networks {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 25px;
-}
 
-.social-networks ion-icon {
-    border: 1px solid #C9CCCB;
-    border-radius: 6px;
-    padding: 8px;
-    cursor: pointer;
-}
 
 .container-form span {
     font-size: 12px;
